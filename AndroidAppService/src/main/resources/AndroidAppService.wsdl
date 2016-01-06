@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:ns1="http://org.apache.axis2/xsd"
+                  xmlns:ns="http://app.android.wso2.com"
+                  xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+                  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                  targetNamespace="http://app.android.wso2.com">
+   <wsdl:types>
+      <xs:schema attributeFormDefault="qualified"
+                 elementFormDefault="qualified"
+                 targetNamespace="http://app.android.wso2.com">
+         <xs:element name="getLastMessage">
+            <xs:complexType>
+               <xs:sequence/>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="getLastMessageResponse">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="putMessage">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element minOccurs="0" name="message" nillable="true" type="xs:string"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:schema>
+   </wsdl:types>
+   <wsdl:message name="getLastMessageRequest">
+      <wsdl:part name="parameters" element="ns:getLastMessage"/>
+   </wsdl:message>
+   <wsdl:message name="getLastMessageResponse">
+      <wsdl:part name="parameters" element="ns:getLastMessageResponse"/>
+   </wsdl:message>
+   <wsdl:message name="putMessageRequest">
+      <wsdl:part name="parameters" element="ns:putMessage"/>
+   </wsdl:message>
+   <wsdl:portType name="AndroidAppServicePortType">
+      <wsdl:operation name="getLastMessage">
+         <wsdl:input message="ns:getLastMessageRequest" wsaw:Action="urn:getLastMessage"/>
+         <wsdl:output message="ns:getLastMessageResponse"
+                      wsaw:Action="urn:getLastMessageResponse"/>
+      </wsdl:operation>
+      <wsdl:operation name="putMessage">
+         <wsdl:input message="ns:putMessageRequest" wsaw:Action="urn:putMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="AndroidAppServiceSoap11Binding"
+                 type="ns:AndroidAppServicePortType">
+      <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+      <wsdl:operation name="getLastMessage">
+         <soap:operation soapAction="urn:getLastMessage" style="document"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="putMessage">
+         <soap:operation soapAction="urn:putMessage" style="document"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="AndroidAppServiceSoap12Binding"
+                 type="ns:AndroidAppServicePortType">
+      <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+      <wsdl:operation name="getLastMessage">
+         <soap12:operation soapAction="urn:getLastMessage" style="document"/>
+         <wsdl:input>
+            <soap12:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal"/>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="putMessage">
+         <soap12:operation soapAction="urn:putMessage" style="document"/>
+         <wsdl:input>
+            <soap12:body use="literal"/>
+         </wsdl:input>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="AndroidAppServiceHttpBinding" type="ns:AndroidAppServicePortType">
+      <http:binding verb="POST"/>
+      <wsdl:operation name="getLastMessage">
+         <http:operation location="getLastMessage"/>
+         <wsdl:input>
+            <mime:content type="text/xml" part="parameters"/>
+         </wsdl:input>
+         <wsdl:output>
+            <mime:content type="text/xml" part="parameters"/>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="putMessage">
+         <http:operation location="putMessage"/>
+         <wsdl:input>
+            <mime:content type="text/xml" part="parameters"/>
+         </wsdl:input>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="AndroidAppService">
+      <wsdl:port name="AndroidAppServiceHttpSoap11Endpoint"
+                 binding="ns:AndroidAppServiceSoap11Binding">
+         <soap:address location="http://localhost:8080/axis2/services/AndroidAppService"/>
+      </wsdl:port>
+      <wsdl:port name="AndroidAppServiceHttpSoap12Endpoint"
+                 binding="ns:AndroidAppServiceSoap12Binding">
+         <soap12:address location="http://localhost:8080/axis2/services/AndroidAppService"/>
+      </wsdl:port>
+      <wsdl:port name="AndroidAppServiceHttpEndpoint"
+                 binding="ns:AndroidAppServiceHttpBinding">
+         <http:address location="http://localhost:8080/axis2/services/AndroidAppService"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>
